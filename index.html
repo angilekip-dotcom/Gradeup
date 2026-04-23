@@ -222,23 +222,23 @@
     display: flex;
     align-items: center;
   }
-  .avatar {
-    width: 40px;
-    height: 40px;
+  .avatar-img {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     border: 2.5px solid var(--bg);
-    margin-left: -12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Syne", sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    margin-left: -14px;
+    object-fit: cover;
     flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
   }
-  .avatars .avatar:first-child { margin-left: 0; }
+  .avatars .avatar-img:first-child { margin-left: 0; }
+  .avatar-img:hover, .avatar-img:active {
+    transform: translateY(-8px) scale(1.15);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    z-index: 100 !important;
+  }
   .social-proof-text { font-size: 0.9rem; color: var(--text-muted); }
   .social-proof-num { font-family: "Syne", sans-serif; font-weight: 700; color: var(--text); font-size: 1rem; }
 
@@ -659,16 +659,17 @@
   <!-- Social proof -->
   <div class="social-proof">
     <div class="avatars">
-      <div class="avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c); z-index:10">A</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe); z-index:9">M</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7); z-index:8">K</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #fa709a, #fee140); z-index:7">S</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb); z-index:6">J</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #fda085, #f6d365); z-index:5">L</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #84fab0, #8fd3f4); z-index:4">N</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #e0c3fc, #8ec5fc); z-index:3">R</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #f77062, #fe5196); z-index:2">T</div>
-      <div class="avatar" style="background: linear-gradient(135deg, #6a11cb, #2575fc); z-index:1">C</div>
+      <img class="avatar-img" style="z-index:11" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=80&h=80&fit=crop&crop=face" alt="étudiant" />
+      <img class="avatar-img" style="z-index:10" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&h=80&fit=crop&crop=face" alt="étudiante" />
+      <img class="avatar-img" style="z-index:9" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=face" alt="étudiant" />
+      <img class="avatar-img" style="z-index:8" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face" alt="étudiante" />
+      <img class="avatar-img" style="z-index:7" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=face" alt="étudiant" />
+      <img class="avatar-img" style="z-index:6" src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=80&h=80&fit=crop&crop=face" alt="étudiante" />
+      <img class="avatar-img" style="z-index:5" src="https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=80&h=80&fit=crop&crop=face" alt="étudiant" />
+      <img class="avatar-img" style="z-index:4" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=80&h=80&fit=crop&crop=face" alt="étudiante" />
+      <img class="avatar-img" style="z-index:3" src="https://images.unsplash.com/photo-1522556189639-b150ed9c4330?w=80&h=80&fit=crop&crop=face" alt="étudiant" />
+      <img class="avatar-img" style="z-index:2" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=face" alt="étudiante" />
+      <img class="avatar-img" style="z-index:1" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&h=80&fit=crop&crop=face" alt="étudiant" />
     </div>
     <div class="social-proof-text">
       <span class="social-proof-num">3 247</span> étudiants l'utilisent déjà 🔥
