@@ -208,6 +208,40 @@
   }
   .stat-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
 
+  /* Social proof avatars */
+  .social-proof {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s ease 0.35s both;
+  }
+  .avatars {
+    display: flex;
+    align-items: center;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2.5px solid var(--bg);
+    margin-left: -12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Syne", sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+  }
+  .avatars .avatar:first-child { margin-left: 0; }
+  .social-proof-text { font-size: 0.9rem; color: var(--text-muted); }
+  .social-proof-num { font-family: "Syne", sans-serif; font-weight: 700; color: var(--text); font-size: 1rem; }
+
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: translateY(0); }
@@ -613,14 +647,34 @@
 <section class="hero">
   <div class="badge">
     <span class="badge-dot"></span>
-    Outil de révision propulsé par l'IA
+    IA de révision nouvelle génération
   </div>
-  <h1>Révise moins,<br><span class="highlight">réussis plus.</span></h1>
-  <p class="hero-sub">Uploade ton cours en PDF et GradeUp génère instantanément des fiches de révision, des QCM et un résumé — pour réviser plus vite et décrocher de meilleures notes.</p>
+  <h1>Le cheat code des<br><span class="highlight">élèves qui réussissent.</span></h1>
+  <p class="hero-sub">Transforme tes cours en résumés ultra rapides + quiz intelligents.<br>Prêt en 10 secondes chrono.</p>
   <div class="cta-group">
-    <button class="btn-primary" onclick="scrollToApp()">Commencer gratuitement →</button>
+    <button class="btn-primary" onclick="scrollToApp()">Commencer en 10 secondes ⚡</button>
     <button class="btn-secondary" onclick="scrollToApp()">Voir comment ça marche</button>
   </div>
+
+  <!-- Social proof -->
+  <div class="social-proof">
+    <div class="avatars">
+      <div class="avatar" style="background: linear-gradient(135deg, #f093fb, #f5576c); z-index:10">A</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #4facfe, #00f2fe); z-index:9">M</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #43e97b, #38f9d7); z-index:8">K</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #fa709a, #fee140); z-index:7">S</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb); z-index:6">J</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #fda085, #f6d365); z-index:5">L</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #84fab0, #8fd3f4); z-index:4">N</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #e0c3fc, #8ec5fc); z-index:3">R</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #f77062, #fe5196); z-index:2">T</div>
+      <div class="avatar" style="background: linear-gradient(135deg, #6a11cb, #2575fc); z-index:1">C</div>
+    </div>
+    <div class="social-proof-text">
+      <span class="social-proof-num">3 247</span> étudiants l'utilisent déjà 🔥
+    </div>
+  </div>
+
   <div class="stats">
     <div class="stat">
       <div class="stat-num">10s</div>
