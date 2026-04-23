@@ -298,6 +298,18 @@
   .file-chosen.visible { display: flex; }
   .file-icon { font-size: 1.5rem; }
   .file-name { font-size: 0.9rem; font-weight: 500; color: var(--accent3); }
+  .file-preview-img { width: 100%; max-height: 160px; object-fit: cover; border-radius: 10px; margin-top: 12px; display: none; }
+  .file-preview-img.visible { display: block; }
+  /* Steps section */
+  .steps-section { position: relative; z-index: 1; padding: 0 20px 60px; max-width: 860px; margin: 0 auto; }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 32px; }
+  .step-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; }
+  .step-num { font-family: "Syne", sans-serif; font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .step-title { font-family: "Syne", sans-serif; font-weight: 700; font-size: 0.95rem; margin: 8px 0 6px; }
+  .step-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+  /* Usage limit */
+  .limit-msg { display: none; text-align: center; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3); border-radius: 12px; padding: 16px; margin-top: 12px; font-size: 0.88rem; color: #ff6b6b; }
+  .limit-msg.visible { display: block; }
 
   /* Options */
   .options-row {
@@ -642,6 +654,8 @@
       <span class="file-icon">✅</span>
       <span class="file-name" id="fileName">cours.pdf</span>
     </div>
+    <img id="filePreview" class="file-preview-img" alt="Aperçu du fichier" />
+    <div class="limit-msg" id="limitMsg">⚠️ Tu as atteint ta limite de 3 générations aujourd'hui. Reviens demain ou partage le site pour débloquer plus !</div>
 
     <div class="options-row">
       <div class="option-chip active" id="chip-flash" onclick="selectMode('flash')">
@@ -684,6 +698,28 @@
 </section>
 
 <!-- FEATURES -->
+<section class="steps-section">
+  <div class="section-label">Comment ça marche</div>
+  <h2 class="section-title">3 étapes, c'est tout.</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-title">Uploade ton cours</div>
+      <div class="step-desc">Photo de cours, fichier texte ou PDF — on accepte tout.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-title">Choisis le type</div>
+      <div class="step-desc">Flashcards, QCM, résumé ou tout à la fois.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-title">Révise !</div>
+      <div class="step-desc">Tes fiches sont générées en quelques secondes. Clique pour tester tes connaissances.</div>
+    </div>
+  </div>
+</section>
+
 <section class="features">
   <div class="section-label">Pourquoi GradeUp</div>
   <h2 class="section-title">Tout ce qu'il te faut<br>pour réussir tes examens</h2>
@@ -726,12 +762,41 @@
     document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
   }
 
+  const DAILY_LIMIT = 3;
+
+  function getUsageCount() {
+    const today = new Date().toDateString();
+    const stored = JSON.parse(localStorage.getItem('gradeup_usage') || '{"date":"","count":0}');
+    if (stored.date !== today) return 0;
+    return stored.count;
+  }
+
+  function incrementUsage() {
+    const today = new Date().toDateString();
+    const count = getUsageCount() + 1;
+    localStorage.setItem('gradeup_usage', JSON.stringify({ date: today, count }));
+  }
+
   function handleFile(event) {
     const file = event.target.files[0];
     if (!file) return;
     selectedFile = file;
     document.getElementById('fileName').textContent = file.name;
     document.getElementById('fileChosen').classList.add('visible');
+
+    // Show image preview
+    const preview = document.getElementById('filePreview');
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.classList.add('visible');
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.classList.remove('visible');
+      preview.src = '';
+    }
   }
 
   // Drag and drop
@@ -762,11 +827,18 @@
       return;
     }
 
+    // Check daily limit
+    if (getUsageCount() >= DAILY_LIMIT) {
+      document.getElementById('limitMsg').classList.add('visible');
+      return;
+    }
+
     const btn = document.getElementById('generateBtn');
     btn.disabled = true;
     document.getElementById('loadingBar').classList.add('visible');
     document.getElementById('statusMsg').textContent = '📖 Lecture de ton fichier...';
     document.getElementById('results').classList.remove('visible');
+    document.getElementById('limitMsg').classList.remove('visible');
 
     try {
       document.getElementById('statusMsg').textContent = '✨ Génération de tes fiches en cours...';
@@ -797,6 +869,7 @@
       renderResults(result, selectedMode);
 
       document.getElementById('statusMsg').textContent = '✅ C\'est prêt ! Clique sur les flashcards pour voir les réponses.';
+      incrementUsage();
       document.getElementById('results').classList.add('visible');
 
     } catch (err) {
