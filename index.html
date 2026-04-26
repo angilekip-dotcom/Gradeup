@@ -10,6 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <title>Revizio — Le cheat code des élèves qui réussissent</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
   :root {
     --bg: #080808;
@@ -925,9 +926,13 @@
         const imageBase64 = await fileToBase64(selectedFile);
         body = { imageBase64, imageType: selectedFile.type };
       } else if (isPDF(selectedFile)) {
-        document.getElementById('statusMsg').textContent = '📄 Lecture du PDF...';
-        const pdfBase64 = await fileToBase64(selectedFile);
-        body = { pdfBase64 };
+        document.getElementById('statusMsg').textContent = '📄 Extraction du texte PDF...';
+        const pdfText = await extractPDFText(selectedFile);
+        if (pdfText && pdfText.length > 50) {
+          body = { prompt: buildPrompt(pdfText, selectedMode) };
+        } else {
+          throw new Error('PDF illisible. Essaie une photo de ton cours à la place.');
+        }
       } else {
         const text = await readFileAsText(selectedFile);
         body = { prompt: buildPrompt(text, selectedMode) };
@@ -994,6 +999,26 @@
       reader.onerror = () => reject(new Error('Lecture échouée'));
       reader.readAsText(file);
     });
+  }
+
+  async function extractPDFText(file) {
+    try {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = '';
+      const maxPages = Math.min(pdf.numPages, 8);
+      for (let i = 1; i <= maxPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        const pageText = content.items.map(item => item.str).join(' ');
+        fullText += pageText + '
+';
+      }
+      return fullText.trim().slice(0, 4000);
+    } catch(e) {
+      return null;
+    }
   }
 
   function buildPrompt(text, mode) {
