@@ -3,20 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GradeUp — Révise plus vite avec l'IA</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#00E5FF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Revizio">
+<link rel="manifest" href="/manifest.json">
+<title>Revizio — Le cheat code des élèves qui réussissent</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c28;
-    --accent: #6c63ff;
-    --accent2: #ff6b6b;
-    --accent3: #43e97b;
-    --text: #f0f0f8;
-    --text-muted: #8888aa;
-    --border: rgba(255,255,255,0.07);
-    --glow: rgba(108,99,255,0.3);
+    --bg: #080808;
+    --surface: #111111;
+    --surface2: #181818;
+    --accent: #00E5FF;
+    --accent2: #00B8CC;
+    --accent3: #ffffff;
+    --text: #ffffff;
+    --text-muted: #888888;
+    --border: rgba(255,255,255,0.08);
+    --glow: rgba(0,229,255,0.2);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -37,8 +42,8 @@
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(108,99,255,0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(67,233,123,0.05) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 50% 100%, rgba(0,229,255,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 20% 10%, rgba(0,229,255,0.04) 0%, transparent 40%);
     pointer-events: none;
     z-index: 0;
   }
@@ -58,28 +63,30 @@
   }
 
   .logo {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Barlow Condensed', 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 1.5rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #00E5FF, #ffffff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .nav-btn {
-    background: var(--accent);
-    color: white;
+    background: #00E5FF;
+    color: #080808;
     border: none;
     padding: 10px 24px;
     border-radius: 50px;
     font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
   }
-  .nav-btn:hover { background: #7c75ff; transform: translateY(-1px); }
+  .nav-btn:hover { background: #33EEFF; transform: translateY(-1px); }
 
   /* HERO */
   .hero {
@@ -98,12 +105,12 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(108,99,255,0.15);
-    border: 1px solid rgba(108,99,255,0.3);
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.25);
     padding: 6px 16px;
     border-radius: 50px;
     font-size: 0.8rem;
-    color: #a8a2ff;
+    color: #00E5FF;
     margin-bottom: 32px;
     animation: fadeUp 0.6s ease both;
   }
@@ -121,17 +128,18 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Barlow Condensed', 'Syne', sans-serif;
     font-weight: 800;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
     margin-bottom: 24px;
     animation: fadeUp 0.6s ease 0.1s both;
   }
 
   h1 .highlight {
-    background: linear-gradient(135deg, var(--accent), #a78bfa, var(--accent3));
+    background: linear-gradient(135deg, #00E5FF, #ffffff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -156,21 +164,22 @@
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, var(--accent), #a78bfa);
-    color: white;
+    background: #00E5FF;
+    color: #080808;
     border: none;
     padding: 16px 36px;
     border-radius: 50px;
     font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s;
-    box-shadow: 0 0 30px var(--glow);
+    box-shadow: 0 0 30px rgba(0,229,255,0.3);
   }
   .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0 50px var(--glow);
+    box-shadow: 0 0 50px rgba(0,229,255,0.5);
+    background: #33EEFF;
   }
 
   .btn-secondary {
@@ -240,7 +249,7 @@
     z-index: 100 !important;
   }
   .social-proof-text { font-size: 0.9rem; color: var(--text-muted); }
-  .social-proof-num { font-family: "Syne", sans-serif; font-weight: 700; color: var(--text); font-size: 1rem; }
+  .social-proof-num { font-family: "Syne", sans-serif; font-weight: 700; color: #00E5FF; font-size: 1rem; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -278,25 +287,28 @@
 
   /* Upload card */
   .upload-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: #0e0e0e;
+    border: 1px solid rgba(0,229,255,0.15);
     border-radius: 24px;
     padding: 40px;
     margin-bottom: 32px;
+    box-shadow: 0 0 40px rgba(0,229,255,0.05);
   }
 
   .upload-zone {
-    border: 2px dashed rgba(108,99,255,0.3);
+    border: 2px dashed rgba(0,229,255,0.35);
     border-radius: 16px;
     padding: 48px 24px;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s;
     position: relative;
+    background: #0e0e0e;
   }
   .upload-zone:hover, .upload-zone.drag-over {
-    border-color: var(--accent);
-    background: rgba(108,99,255,0.05);
+    border-color: #00E5FF;
+    background: rgba(0,229,255,0.04);
+    box-shadow: 0 0 20px rgba(0,229,255,0.1), inset 0 0 20px rgba(0,229,255,0.03);
   }
 
   .upload-icon {
@@ -366,9 +378,9 @@
   }
   .option-chip:hover { border-color: var(--accent); }
   .option-chip.active {
-    background: rgba(108,99,255,0.15);
-    border-color: var(--accent);
-    color: #a8a2ff;
+    background: rgba(0,229,255,0.1);
+    border-color: #00E5FF;
+    color: #00E5FF;
   }
   .option-chip-icon { font-size: 1.4rem; margin-bottom: 6px; }
   .option-chip-label { font-size: 0.8rem; font-weight: 500; }
@@ -376,8 +388,8 @@
   /* Generate button */
   .generate-btn {
     width: 100%;
-    background: linear-gradient(135deg, var(--accent), #a78bfa);
-    color: white;
+    background: #00E5FF;
+    color: #080808;
     border: none;
     padding: 18px;
     border-radius: 14px;
@@ -387,15 +399,16 @@
     cursor: pointer;
     margin-top: 24px;
     transition: all 0.3s;
-    box-shadow: 0 0 30px var(--glow);
+    box-shadow: 0 0 30px rgba(0,229,255,0.25);
     position: relative;
     overflow: hidden;
   }
   .generate-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 0 50px var(--glow);
+    box-shadow: 0 0 50px rgba(0,229,255,0.4);
+    background: #33EEFF;
   }
-  .generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
   /* Loading */
   .loading-bar {
@@ -450,8 +463,9 @@
     transition: all 0.2s;
   }
   .tab.active {
-    background: var(--accent);
-    color: white;
+    background: #00E5FF;
+    color: #080808;
+    font-weight: 700;
   }
 
   .tab-content { display: none; }
@@ -474,7 +488,7 @@
     position: absolute;
     left: 0; top: 0; bottom: 0;
     width: 3px;
-    background: linear-gradient(to bottom, var(--accent), var(--accent3));
+    background: linear-gradient(to bottom, #00E5FF, #ffffff);
     border-radius: 3px 0 0 3px;
   }
   .flashcard:hover { border-color: rgba(108,99,255,0.3); transform: translateX(4px); }
@@ -639,7 +653,7 @@
 <body>
 
 <nav>
-  <div class="logo">GradeUp</div>
+  <div class="logo">Revizio</div>
   <button class="nav-btn" onclick="scrollToApp()">Essayer gratuitement</button>
 </nav>
 
@@ -701,8 +715,8 @@
     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
       <span class="upload-icon">📄</span>
       <div class="upload-title">Dépose ton PDF ici ou clique pour choisir</div>
-      <div class="upload-sub">PDF, image de cours ou fichier texte (.txt)</div>
-      <input type="file" id="fileInput" accept=".pdf,.txt,image/*" onchange="handleFile(event)">
+      <div class="upload-sub">📄 PDF · 🖼️ Photo de cours · 📝 Fichier texte</div>
+      <input type="file" id="fileInput" accept=".pdf,.txt,image/*,.png,.jpg,.jpeg" onchange="handleFile(event)">
     </div>
 
     <div class="file-chosen" id="fileChosen">
@@ -749,6 +763,14 @@
     <div class="tab-content active" id="tab-flashcards"></div>
     <div class="tab-content" id="tab-qcm"></div>
     <div class="tab-content" id="tab-summary"></div>
+
+  <!-- Share button -->
+  <div id="shareSection" style="display:none; text-align:center; margin-top:24px; animation: fadeUp 0.5s ease both;">
+    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:12px;">Tu as aimé ? Partage à un ami 👇</p>
+    <button onclick="shareRevizio()" style="background:transparent; border:1px solid #00E5FF; color:#00E5FF; padding:12px 28px; border-radius:50px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.2s;">
+      🔗 Partager Revizio
+    </button>
+  </div>
   </div>
 </section>
 
@@ -776,7 +798,7 @@
 </section>
 
 <section class="features">
-  <div class="section-label">Pourquoi GradeUp</div>
+  <div class="section-label">Pourquoi Revizio</div>
   <h2 class="section-title">Tout ce qu'il te faut<br>pour réussir tes examens</h2>
   <div class="features-grid">
     <div class="feature-card">
@@ -803,8 +825,8 @@
 </section>
 
 <footer>
-  <div class="logo" style="margin-bottom:12px">GradeUp</div>
-  <p>Révise plus vite. Réussis mieux. © 2025 GradeUp</p>
+  <div class="logo" style="margin-bottom:12px">Revizio</div>
+  <p>Révise plus vite. Réussis mieux. © 2025 Revizio</p>
 </footer>
 
 <script>
@@ -821,7 +843,7 @@
 
   function getUsageCount() {
     const today = new Date().toDateString();
-    const stored = JSON.parse(localStorage.getItem('gradeup_usage') || '{"date":"","count":0}');
+    const stored = JSON.parse(localStorage.getItem('revizio_usage') || '{"date":"","count":0}');
     if (stored.date !== today) return 0;
     return stored.count;
   }
@@ -829,7 +851,7 @@
   function incrementUsage() {
     const today = new Date().toDateString();
     const count = getUsageCount() + 1;
-    localStorage.setItem('gradeup_usage', JSON.stringify({ date: today, count }));
+    localStorage.setItem('revizio_usage', JSON.stringify({ date: today, count }));
   }
 
   function handleFile(event) {
@@ -902,6 +924,10 @@
       if (isImage(selectedFile)) {
         const imageBase64 = await fileToBase64(selectedFile);
         body = { imageBase64, imageType: selectedFile.type };
+      } else if (isPDF(selectedFile)) {
+        document.getElementById('statusMsg').textContent = '📄 Lecture du PDF...';
+        const pdfBase64 = await fileToBase64(selectedFile);
+        body = { pdfBase64 };
       } else {
         const text = await readFileAsText(selectedFile);
         body = { prompt: buildPrompt(text, selectedMode) };
@@ -926,6 +952,7 @@
       document.getElementById('statusMsg').textContent = '✅ C\'est prêt ! Clique sur les flashcards pour voir les réponses.';
       incrementUsage();
       document.getElementById('results').classList.add('visible');
+      document.getElementById('shareSection').style.display = 'block';
 
     } catch (err) {
       document.getElementById('statusMsg').textContent = '❌ Erreur : ' + err.message;
@@ -961,10 +988,6 @@
   const INSTRUCTION = `Tu es un assistant de révision scolaire. Génère des supports de révision en FRANÇAIS à partir du contenu fourni. Réponds UNIQUEMENT avec un objet JSON valide, sans texte avant ni après, sans backticks. Format:\n${JSON_FORMAT}`;
 
   async function readFileAsText(file) {
-    const isPDF = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
-    if (isPDF) {
-      return `Cours de : ${file.name.replace('.pdf','').replace(/_/g,' ')}. Génère des fiches de révision générales sur ce sujet.`;
-    }
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = e => resolve(e.target.result.slice(0, 4000));
@@ -979,6 +1002,10 @@
 
   function isImage(file) {
     return file.type.startsWith('image/');
+  }
+
+  function isPDF(file) {
+    return file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
   }
 
   async function fileToBase64(file) {
@@ -1063,6 +1090,35 @@
     });
     document.querySelectorAll('.tab-content').forEach((c, i) => {
       c.classList.toggle('active', ['flashcards','qcm','summary'][i] === tab);
+    });
+  }
+
+  // Share function
+  async function shareRevizio() {
+    const shareData = {
+      title: 'Revizio',
+      text: '🧠 Je révise avec Revizio — génère des fiches et QCM depuis tes cours en 10 secondes !',
+      url: 'https://revizio.vercel.app'
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText('https://gradeup-three.vercel.app');
+        alert('Lien copié ! Partage-le à tes amis 🚀');
+      }
+    } catch(e) {
+      await navigator.clipboard.writeText('https://gradeup-three.vercel.app');
+      alert('Lien copié ! Partage-le à tes amis 🚀');
+    }
+  }
+
+  // PWA Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').then(() => {
+        console.log('Revizio PWA ready!');
+      });
     });
   }
 </script>
