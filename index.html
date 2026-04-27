@@ -412,25 +412,88 @@
   .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
   /* Loading */
+  /* Book loader */
   .loading-bar {
     display: none;
-    height: 3px;
-    background: var(--surface2);
-    border-radius: 3px;
-    margin-top: 16px;
-    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 10px;
   }
-  .loading-bar.visible { display: block; }
-  .loading-bar-inner {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent3));
-    border-radius: 3px;
-    animation: loading 2s ease-in-out infinite;
+  .loading-bar.visible { display: flex; }
+
+  .book-loader {
+    width: 60px;
+    height: 45px;
+    position: relative;
   }
-  @keyframes loading {
-    0% { width: 0%; margin-left: 0; }
-    50% { width: 70%; margin-left: 15%; }
-    100% { width: 0%; margin-left: 100%; }
+
+  .book-cover {
+    width: 60px;
+    height: 45px;
+    background: linear-gradient(135deg, #00B8CC, #00E5FF);
+    border-radius: 2px 6px 6px 2px;
+    position: absolute;
+    box-shadow: 0 0 15px rgba(0,229,255,0.4);
+  }
+
+  .book-spine {
+    width: 6px;
+    height: 45px;
+    background: #007A8A;
+    border-radius: 2px 0 0 2px;
+    position: absolute;
+    left: 0;
+  }
+
+  .book-page {
+    width: 50px;
+    height: 41px;
+    background: #0e0e0e;
+    border-radius: 0 4px 4px 0;
+    position: absolute;
+    left: 8px;
+    top: 2px;
+    transform-origin: left center;
+    animation: flipPage 1.5s ease-in-out infinite;
+  }
+
+  .book-page:nth-child(3) { animation-delay: 0s; background: #111; }
+  .book-page:nth-child(4) { animation-delay: 0.3s; background: #0e0e0e; }
+  .book-page:nth-child(5) { animation-delay: 0.6s; background: #111; }
+
+  .book-page::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    width: 35px;
+    height: 2px;
+    background: rgba(0,229,255,0.3);
+    border-radius: 2px;
+    box-shadow: 0 6px 0 rgba(0,229,255,0.2), 0 12px 0 rgba(0,229,255,0.15), 0 18px 0 rgba(0,229,255,0.1);
+  }
+
+  @keyframes flipPage {
+    0% { transform: rotateY(0deg); opacity: 1; }
+    40% { transform: rotateY(-120deg); opacity: 0.5; }
+    60% { transform: rotateY(-120deg); opacity: 0.5; }
+    100% { transform: rotateY(0deg); opacity: 1; }
+  }
+
+  .loading-text {
+    font-size: 0.8rem;
+    color: #00E5FF;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
   }
 
   /* Results */
@@ -756,7 +819,16 @@
     <button class="generate-btn" id="generateBtn" onclick="generate()">
       ✨ Générer mes fiches de révision
     </button>
-    <div class="loading-bar" id="loadingBar"><div class="loading-bar-inner"></div></div>
+    <div class="loading-bar" id="loadingBar">
+      <div class="book-loader">
+        <div class="book-spine"></div>
+        <div class="book-cover"></div>
+        <div class="book-page"></div>
+        <div class="book-page"></div>
+        <div class="book-page"></div>
+      </div>
+      <div class="loading-text" id="loadingText">Lecture en cours...</div>
+    </div>
     <div class="status-msg" id="statusMsg"></div>
   </div>
 
@@ -921,19 +993,21 @@
     const btn = document.getElementById('generateBtn');
     btn.disabled = true;
     document.getElementById('loadingBar').classList.add('visible');
-    document.getElementById('statusMsg').textContent = '📖 Lecture de ton fichier...';
+    document.getElementById('statusMsg').textContent = '';
+    document.getElementById('loadingText').textContent = 'Lecture en cours...';
     document.getElementById('results').classList.remove('visible');
     document.getElementById('limitMsg').classList.remove('visible');
 
     try {
-      document.getElementById('statusMsg').textContent = '✨ Génération de tes fiches en cours...';
+      document.getElementById('statusMsg').textContent = '';
+      document.getElementById('loadingText').textContent = 'Génération des fiches...';
 
       let body;
       if (isImage(selectedFile)) {
         const imageBase64 = await fileToBase64(selectedFile);
         body = { imageBase64, imageType: selectedFile.type };
       } else if (isPDF(selectedFile)) {
-        document.getElementById('statusMsg').textContent = '📄 Extraction du texte PDF...';
+        document.getElementById('loadingText').textContent = 'Lecture du PDF...';
         let pdfText = null;
         try { pdfText = await extractPDFText(selectedFile); } catch(e) {}
         if (pdfText && pdfText.length > 50) {
@@ -1046,6 +1120,30 @@
   }
 
   async function fileToBase64(file) {
+    // Compress image before encoding to avoid Chrome mobile size limits
+    if (file.type.startsWith('image/')) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX = 1200;
+          let w = img.width, h = img.height;
+          if (w > MAX || h > MAX) {
+            if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+            else { w = Math.round(w * MAX / h); h = MAX; }
+          }
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          const b64 = canvas.toDataURL('image/jpeg', 0.82).split(',')[1];
+          resolve(b64);
+        };
+        img.onerror = () => reject(new Error('Compression échouée'));
+        img.src = url;
+      });
+    }
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = e => resolve(e.target.result.split(',')[1]);
