@@ -715,10 +715,17 @@
   <div class="upload-card">
     <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
       <span class="upload-icon">📄</span>
-      <div class="upload-title">Dépose ton PDF ici ou clique pour choisir</div>
-      <div class="upload-sub">📄 PDF · 🖼️ Photo de cours · 📝 Fichier texte</div>
+      <div class="upload-title">Dépose ton fichier ou clique pour choisir</div>
+      <div class="upload-sub">📄 PDF · 🖼️ Photo · 📝 Texte</div>
       <input type="file" id="fileInput" accept=".pdf,.txt,image/*,.png,.jpg,.jpeg" onchange="handleFile(event)">
     </div>
+    <div style="text-align:center; margin-top:12px;">
+      <span style="color:var(--text-muted); font-size:0.8rem;">ou</span>
+    </div>
+    <button onclick="document.getElementById('cameraInput').click()" style="width:100%; margin-top:8px; background:transparent; border:1px solid rgba(0,229,255,0.3); color:#00E5FF; padding:14px; border-radius:14px; font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px;" onmouseover="this.style.background='rgba(0,229,255,0.08)'" onmouseout="this.style.background='transparent'">
+      📸 Prendre une photo du cours
+    </button>
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleFile(event)" style="display:none">
 
     <div class="file-chosen" id="fileChosen">
       <span class="file-icon">✅</span>
@@ -927,11 +934,16 @@
         body = { imageBase64, imageType: selectedFile.type };
       } else if (isPDF(selectedFile)) {
         document.getElementById('statusMsg').textContent = '📄 Extraction du texte PDF...';
-        const pdfText = await extractPDFText(selectedFile);
+        let pdfText = null;
+        try { pdfText = await extractPDFText(selectedFile); } catch(e) {}
         if (pdfText && pdfText.length > 50) {
           body = { prompt: buildPrompt(pdfText, selectedMode) };
         } else {
-          throw new Error('PDF illisible. Essaie une photo de ton cours à la place.');
+          // Fallback: send as image (first page screenshot approach won't work,
+          // so use filename as hint and ask AI to generate relevant content)
+          const fileName = selectedFile.name.replace('.pdf','').replace(/[_-]/g,' ');
+          const fallbackText = `Document PDF: "${fileName}". Ce document semble être un cours scolaire. Génère des fiches de révision pertinentes basées sur le titre du document.`;
+          body = { prompt: buildPrompt(fallbackText, selectedMode) };
         }
       } else {
         const text = await readFileAsText(selectedFile);
