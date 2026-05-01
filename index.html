@@ -516,7 +516,7 @@ async function rtxt(file){
 const INST=`Tu es un assistant de révision scolaire. Génère des supports de révision en FRANÇAIS basés UNIQUEMENT sur le contenu fourni. Réponds UNIQUEMENT avec un JSON valide, sans texte avant ni après, sans backticks. Format:{"flashcards":[{"question":"...","answer":"..."},{"question":"...","answer":"..."},{"question":"...","answer":"..."},{"question":"...","answer":"..."},{"question":"...","answer":"..."}],"qcm":[{"question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"correct":0},{"question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"correct":1},{"question":"...","options":["A. ...","B. ...","C. ...","D. ..."],"correct":2}],"summary":{"title":"Résumé","sections":[{"heading":"...","content":"..."},{"heading":"...","content":"..."},{"heading":"...","content":"..."}]}}`;
 
 async function gen(){
-  if(!sf){document.getElementById('st').textContent='⚠️ Uploade d'abord ton cours !';return}
+  if(!sf){document.getElementById('st').textContent="⚠️ Uploade d'abord ton cours !";return}
   if(getU()>=LIM){document.getElementById('lim').classList.add('vis');return}
   const btn=document.getElementById('gb');
   btn.disabled=true;
