@@ -552,7 +552,7 @@ async function gen(){
     if(s===-1||e2===-1)throw new Error('Réponse invalide');
     const result=JSON.parse(raw.slice(s,e2+1));
     rrender(result);addU();
-    document.getElementById('st').textContent='✅ C'est prêt !';
+    document.getElementById('st').textContent="✅ C'est prêt !";
     document.getElementById('res').classList.add('vis');
     document.getElementById('sr').classList.add('vis');
   }catch(err){document.getElementById('st').textContent='❌ Erreur : '+err.message}
