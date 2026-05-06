@@ -536,8 +536,7 @@ async function gen(){
     }else if(isPDF){
       document.getElementById('lt').textContent='LECTURE PDF...';
       const name=sf.name.replace('.pdf','').replace(/[_-]/g,' ');
-      body=JSON.stringify({prompt:`${INST}\n\nTitre: "${name}". }\n\nContenu:\n"""\n${txt}\n"""` });`});
-    }else{
+ body=JSON.stringify({prompt:`${INST}\n\nTitre du fichier: "${name}". Génère les fiches de révision sur ce sujet.`});   }else{
       document.getElementById('lt').textContent='LECTURE...';
       const txt=await rtxt(sf);
       body=JSON.stringify({prompt:`${INST}\n\nContenu:\n"""\n${txt}\n"""`});
