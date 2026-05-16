@@ -38,7 +38,24 @@ export default async function handler(req, res) {
 
     let messages;
 
-    if (imageBase64) {
+     if (pdfBase64) {
+      const pdfParse = (await import('pdf-parse/lib/pdf-parse.js')).default;
+      const buffer = Buffer.from(pdfBase64, 'base64');
+      const parsed = await pdfParse(buffer);
+      const pdfText = parsed.text.slice(0, 4000).trim();
+      const SYSTEM = 'Tu es un assistant de révision scolaire. Tu génères uniquement du JSON valide en français, sans texte avant ni après, sans backticks markdown.';
+      const userPrompt = pdfText.length > 50
+        ? `${INSTRUCTION}\n\nContenu du PDF:\n"""\n${pdfText}\n"""`
+        : `Génère des fiches de révision génériques.`;
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.GROQ_API_KEY}` },
+        body: JSON.stringify({ model: 'llama-3.3-70b-versatile', max_tokens: 2000, messages: [{ role: 'system', content: SYSTEM }, { role: 'user', content: userPrompt }] })
+      });
+      const data = await response.json();
+      if (data.error) return res.status(500).json({ error: data.error.message });
+      return res.status(200).json({ text: data.choices[0].message.content });
+    } else if (imageBase64) {
       messages = [{
         role: 'user',
         content: [
