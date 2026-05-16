@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { prompt, imageBase64, imageType } = req.body;
+    const { prompt, imageBase64, imageType, pdfBase64 } = req.body;
 
     const SYSTEM = 'Tu es un assistant de révision scolaire. Tu génères uniquement du JSON valide en français, sans texte avant ni après, sans backticks markdown.';
 
